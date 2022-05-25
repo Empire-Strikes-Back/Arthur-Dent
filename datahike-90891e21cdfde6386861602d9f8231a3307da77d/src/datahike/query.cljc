@@ -566,7 +566,7 @@
              (when-some [v (resolve sym)] @v))))
 
 (def ^:private find-method
-  #?(:cljs (do (js/console.log "point 2") nil)
+  #?(:cljs (do #_(log/debug "point 2") nil)
      :clj (memoize
            (fn find-method-impl [^Class this-class method-name args-classes]
              (or (->> this-class

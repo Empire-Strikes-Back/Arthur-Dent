@@ -72,7 +72,7 @@
                      (try
                        (async/<! l)
                        (let [result (<? S (update-and-flush-db connection tx-data d/transact))]
-                         #?(:cljs (js/console.log  "the result: transact! " result))
+                         #?(:cljs (log/debugf  "the result: transact! " result))
                          result)
                        (finally
                          (async/put! l :unlocked)))))))
@@ -89,7 +89,7 @@
     #?(:cljs (go-try S
                      (try
                        (let [result (<? S (transact! connection arg))]
-                         #?(:cljs (js/console.log  "the result: transact" result))
+                         #?(:cljs (log/debugf  "the result: transact" result))
                          result)
                        (catch js/Error e
                          (log/errorf "Error during transaction %s" (str e))
@@ -164,7 +164,7 @@
   (-connect [config]
     (go-try S
             (if-not (ha/<? (-database-exists? config))
-              (do (println "Database doesn't exist ") nil)  ;; Log this to user
+              (do (log/info "Database doesn't exist ") nil)  ;; Log this to user
               (let [config (dc/load-config config)
                     store-config (:store config)
                     raw-store (ha/<? (ds/connect-store store-config))
@@ -204,7 +204,7 @@
   (-create-database [config #_& #_deprecated-config]
     (ha/go-try
      (if (ha/<? (-database-exists? config))
-       (do (println "Database already exists ") nil) ;; Log this to user
+       (do (log/info "Database already exists ") nil) ;; Log this to user
        (let [{:keys [keep-history? initial-tx] :as config} (dc/load-config config nil #_deprecated-config)
              store-config (:store config)
              store (kc/ensure-cache
@@ -231,11 +231,11 @@
                                      :temporal-aevt-key (ha/<? (di/-flush temporal-aevt backend))
                                      :temporal-avet-key (ha/<? (di/-flush temporal-avet backend))}))))
          (ds/release-store store-config store)
-         (println "Database initialised: " (get-in config [:store :id]))
+         (log/info "Database initialised: " (get-in config [:store :id]))
          (if initial-tx
              (let [conn (<? S (-connect config))
                    created-db (<? S (transact conn initial-tx))]
-               #?(:cljs (js/console.log "created db:" created-db))
+               #?(:cljs (log/info "created db:" created-db))
                (release conn)
                created-db)
            store-config)))))
@@ -245,7 +245,7 @@
      (if (ha/<? (-database-exists? config))
        (let [config (dc/load-config config {})]
          (ha/<? (ds/delete-store (:store config))))
-       (do (println "Database doesn't exist") nil)))))
+       (do (log/info "Database doesn't exist") nil)))))
 
 (defn connect
   ([]
