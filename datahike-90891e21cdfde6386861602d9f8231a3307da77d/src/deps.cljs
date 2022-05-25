@@ -1,0 +1,1 @@
+{:externs ["datahike/externs.js"]}
