@@ -1059,7 +1059,7 @@
   (ha/go-try
    (let [query         (if (contains? query-map :query) (:query query-map) query-map)
          args          (if (contains? query-map :args) (:args query-map) inputs)
-         _             #?(:cljs (js/console.log "args: " args) :clj nil)
+         _             #?(:cljs nil #_(js/console.log "args: " args) :clj nil)
          parsed-q      (memoized-parse-query query)
          find          (:qfind parsed-q)
          find-elements (dpip/find-elements find)
@@ -1080,7 +1080,7 @@
                            (ha/<?)
                            ((fn [x] (js/console.log x) x))
                            (collect all-vars))]
-     (js/console.log "the resultset" resultset "args:" args)
+     #_(js/console.log "the resultset" resultset "args:" args)
      (cond->> resultset
        (:with query)                                 (mapv #(vec (subvec % 0 result-arity)))
        (some #(instance? Aggregate %) find-elements) (aggregate find-elements context)
