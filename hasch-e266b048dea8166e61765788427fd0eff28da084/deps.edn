@@ -1,10 +1,9 @@
 {:paths ["src"]
  :deps {org.clojure/clojure        {:mvn/version "1.10.1"}
         org.clojure/clojurescript  {:mvn/version "1.10.764"}
-        fress/fress                {:git/url "https://github.com/groundedSAGE/fress.git"
+        fress/fress                {:git/url "https://github.com/pkpkpk/fress"
                                     :sha "911405e5768937c9af99b943b15563e47dfa5ae3"}
-        io.replikativ/incognito    {:git/url "https://github.com/groundedSAGE/incognito.git"
-                                    :sha "69530898a5c5a3ec8de84796d4dce1cedb1fd3a7"}}
+        io.replikativ/incognito    {:local/root "../incognito-69530898a5c5a3ec8de84796d4dce1cedb1fd3a7"}}
  :aliases {:cljs {:extra-deps {thheller/shadow-cljs {:mvn/version "2.10.21"}
                                binaryage/devtools   {:mvn/version "1.0.2"}}
                   :extra-paths ["test"]}

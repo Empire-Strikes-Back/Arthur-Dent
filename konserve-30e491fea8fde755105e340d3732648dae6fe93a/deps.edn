@@ -2,10 +2,9 @@
  :deps {org.clojure/clojure {:mvn/version "1.10.1"}
         org.clojure/clojurescript {:mvn/version "1.10.773"}
         org.clojure/data.fressian {:mvn/version "1.0.0"} ;; for filestore
-        fress/fress                {:git/url "https://github.com/groundedSAGE/fress.git"
-                                    :sha "911405e5768937c9af99b943b15563e47dfa5ae3"} 
-        io.replikativ/incognito    {:git/url "https://github.com/groundedSAGE/incognito.git"
-                                    :sha "69530898a5c5a3ec8de84796d4dce1cedb1fd3a7"}
+        fress/fress                {:git/url "https://github.com/pkpkpk/fress"
+                                    :sha "911405e5768937c9af99b943b15563e47dfa5ae3"}
+        io.replikativ/incognito    {:local/root "../incognito-69530898a5c5a3ec8de84796d4dce1cedb1fd3a7"}
         io.replikativ/hasch {:local/root "../hasch-e266b048dea8166e61765788427fd0eff28da084"}
         io.replikativ/superv.async #_{:mvn/version "0.2.11"}
         {:local/root "../superv.async-bc1bf6e4336baee365e7f0da9b3022e450e58750"}
