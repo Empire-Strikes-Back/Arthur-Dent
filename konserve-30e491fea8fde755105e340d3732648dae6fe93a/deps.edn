@@ -6,11 +6,9 @@
                                     :sha "911405e5768937c9af99b943b15563e47dfa5ae3"} 
         io.replikativ/incognito    {:git/url "https://github.com/groundedSAGE/incognito.git"
                                     :sha "69530898a5c5a3ec8de84796d4dce1cedb1fd3a7"}
-        io.replikativ/hasch {:git/url "https://github.com/groundedSAGE/hasch.git"
-                             :sha "e266b048dea8166e61765788427fd0eff28da084"}
+        io.replikativ/hasch {:local/root "../hasch-e266b048dea8166e61765788427fd0eff28da084"}
         io.replikativ/superv.async #_{:mvn/version "0.2.11"}
-        {:git/url "https://github.com/groundedSAGE/superv.async.git"
-         :sha "bc1bf6e4336baee365e7f0da9b3022e450e58750"}
+        {:local/root "../superv.async-bc1bf6e4336baee365e7f0da9b3022e450e58750"}
         org.clojars.mmb90/cljs-cache {:mvn/version "0.1.4"}
         ;; reactivate for nodejs support
         ;com.google.javascript/closure-compiler-unshaded {:mvn/version "v20190325"}

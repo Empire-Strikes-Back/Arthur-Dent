@@ -4,8 +4,7 @@
         org.clojure/core.rrb-vector {:mvn/version "0.1.1"}
         org.clojure/core.cache      {:mvn/version "1.0.207"}
         com.taoensso/carmine        {:mvn/version "2.20.0"}
-        io.replikativ/konserve      {:git/url "https://github.com/groundedSAGE/konserve.git"
-                                     :sha "30e491fea8fde755105e340d3732648dae6fe93a"}}
+        io.replikativ/konserve      {:local/root "../konserve-30e491fea8fde755105e340d3732648dae6fe93a"}}
  :aliases {:cljs {:extra-deps {thheller/shadow-cljs  {:mvn/version "2.10.21"}
                                binaryage/devtools    {:mvn/version "1.0.2"}}
                   :extra-paths ["test"]}
