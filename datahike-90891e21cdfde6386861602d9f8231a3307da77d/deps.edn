@@ -4,12 +4,9 @@
         org.clojure/tools.reader      {:mvn/version "1.3.3"}
         environ/environ               {:mvn/version "1.2.0"}
         com.taoensso/timbre           {:mvn/version "4.10.0"}
-        io.replikativ/hitchhiker-tree {:git/url "https://github.com/groundedSAGE/hitchhiker-tree.git"
-                                       :sha "114bfbf829e05079f01ce448f96d017dad48e980"}
-        io.replikativ/konserve        {:git/url "https://github.com/groundedSAGE/konserve.git"
-                                       :sha "30e491fea8fde755105e340d3732648dae6fe93a"}
-        io.replikativ/superv.async    {:git/url "https://github.com/groundedSAGE/superv.async.git"
-                                       :sha "bc1bf6e4336baee365e7f0da9b3022e450e58750"} 
+        io.replikativ/hitchhiker-tree {:local/root "../hitchhiker-tree-114bfbf829e05079f01ce448f96d017dad48e980"}
+        io.replikativ/konserve        {:local/root "../konserve-30e491fea8fde755105e340d3732648dae6fe93a"}
+        io.replikativ/superv.async    {:local/root "../superv.async-bc1bf6e4336baee365e7f0da9b3022e450e58750"}
         io.lambdaforge/datalog-parser  {:git/url "https://github.com/groundedSAGE/datalog-parser.git"
                                         :sha "6493b5d3f1a00bd57e825dc2755d19030f407819"}
         io.replikativ/zufall          {:mvn/version "0.1.0"}
