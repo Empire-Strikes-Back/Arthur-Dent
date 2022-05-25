@@ -388,7 +388,7 @@
 (defn resolve-ins [context bindings values]
   (let [result
         (reduce resolve-in context (zipmap bindings values))]
-    (js/console.log "resolve-ins: " result)
+    #_(js/console.log "resolve-ins: " result)
     result))
 
 ;;
@@ -878,11 +878,11 @@
 
       '[*]                                                   ;; pattern
       (let [source (:implicit-source context)
-            _ (js/console.log "-resolve-clause [*] - source" source)
+            #_#(js/console.log "-resolve-clause [*] - source" source)
             pattern (ha/<? (resolve-pattern-lookup-refs source clause))
-            _ (js/console.log "-resolve-clause [*] - pattern" pattern)
-             _ (js/console.log "-resolve-clause [*] - satisfied source" (satisfies? db/IDB source))
-             _ (js/console.log "-resolve-clause [*] - dynamic source" (dynamic-lookup-attrs source pattern))
+            _ nil #_(js/console.log "-resolve-clause [*] - pattern" pattern)
+            _ nil #_(js/console.log "-resolve-clause [*] - satisfied source" (satisfies? db/IDB source))
+            _ nil #_(js/console.log "-resolve-clause [*] - dynamic source" (dynamic-lookup-attrs source pattern))
             relation (ha/<? (lookup-pattern source pattern))]
         (binding [*lookup-attrs* (if (satisfies? db/IDB source)
                                    (dynamic-lookup-attrs source pattern)
@@ -891,7 +891,7 @@
           (update context :rels collapse-rels relation)))))))
 
 (defn resolve-clause [context clause]
-  (js/console.log "resolve-clause: " context)
+  #_(js/console.log "resolve-clause: " context)
   (ha/go-try
    (if (rule? context clause)
      (if (source? (first clause))
@@ -1074,11 +1074,11 @@
          wheres        (:where query)
          context       (-> (Context. [] {} {})
                            (resolve-ins (:qin parsed-q) args))
-         _             (js/console.log "inspect context: " context)
+         _             nil #_(js/console.log "inspect context: " context)
          resultset     (-> context
                            (-q wheres)
                            (ha/<?)
-                           ((fn [x] (js/console.log x) x))
+                           ((fn [x] #_(js/console.log x) x))
                            (collect all-vars))]
      #_(js/console.log "the resultset" resultset "args:" args)
      (cond->> resultset
