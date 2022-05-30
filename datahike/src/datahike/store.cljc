@@ -7,6 +7,7 @@
             [hitchhiker.tree.utils.cljs.async :as ha]
             [superv.async :refer [#?(:clj <??) S <? go-try]]
             #?(:cljs [konserve.indexeddb :refer [new-indexeddb-store delete-indexeddb-store]])
+            #?(:cljs [konserve.orbitdb])
             [konserve.serializers :as ser]
             [environ.core :refer [env]]))
 
@@ -132,7 +133,7 @@
 
 #?(:cljs (defmethod connect-store :indexeddb [{:keys [id]}]
            (go-try S
-                   (or (get indexeddb id)
+                   (or (get @indexeddb id)
                        (let [store (kons/add-hitchhiker-tree-handlers
                                     (<? S (new-indexeddb-store id :serializer (ser/fressian-serializer))))]
                          (swap! indexeddb assoc id store)
@@ -150,6 +151,45 @@
                      (when deleted?
                        (swap! indexeddb dissoc id)
                        (println "Database deleted: " id))))))
+
+(def orbitdbA (atom {}))
+
+@orbitdbA
+
+#?(:cljs (defmethod empty-store :orbitdb [{:keys [id orbitdb]}]
+           (go-try S
+                   (let [store (kons/add-hitchhiker-tree-handlers
+                                (<? S (konserve.orbitdb/new-store
+                                       id
+                                       :serializer (ser/fressian-serializer)
+                                       :orbitdb orbitdb)))]
+                     (swap! orbitdbA assoc id store)
+                     store))))
+
+#?(:cljs (defmethod connect-store :orbitdb [{:keys [id orbitdb]}]
+           (go-try S
+                   (or (get @orbitdbA id)
+                       (let [store (kons/add-hitchhiker-tree-handlers
+                                    (<? S (konserve.orbitdb/new-store
+                                           id
+                                           :serializer (ser/fressian-serializer)
+                                           :orbitdb orbitdb)))]
+                         (swap! orbitdbA assoc id store)
+                         store)))))
+
+#?(:cljs (defmethod release-store :orbitdb [{:keys [id orbitdb]}]
+           (do
+             (.close (:store (get @orbitdbA id)))
+             (swap! orbitdbA dissoc id)
+             nil)))
+
+#?(:cljs (defmethod delete-store :orbitdb [{:keys [id orbitdb]}]
+           (go-try S
+                   (let [deleted? (ha/<? (delete-store {:id id :orbitdb orbitdb}))]
+                     (when deleted?
+                       (swap! orbitdbA dissoc id)
+                       (println "Database deleted: " id))))))
+
 
 (defmethod scheme->index :file [_]
   :datahike.index/hitchhiker-tree)

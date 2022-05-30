@@ -14,6 +14,7 @@
             [taoensso.timbre :as log]
             [clojure.spec.alpha :as s]
             #?(:cljs [konserve.indexeddb :refer [collect-indexeddb-stores]])
+            #?(:cljs [konserve.orbitdb])
             #?(:cljs [cljs.core.async.interop :refer-macros [<p!]])
             #?(:clj [clojure.core.cache :as cache])
             #?(:cljs [cljs.cache :as cache]))
@@ -142,6 +143,7 @@
   (-database-exists? [config]
     (async/go
       (let [exists? (or (memory-store? config)
+                        (konserve.orbitdb/store-exists? config)
                         (contains? (ha/<? (collect-indexeddb-stores))  ;; TODO: ensure that this is our db
                                    (get-in config [:store :id])))]
         (if exists?
