@@ -204,7 +204,7 @@
                 serializer (ser/string-serializer)
                 version 1}}]
   (let [res (chan)
-        req (.open js/window.indexedDB name 1)]
+        req (.open js/indexedDB name 1)]
     (set! (.-onerror req)
           (fn [e]
             (put! res (ex-info "Cannot open IndexedDB store."
@@ -232,7 +232,7 @@
 
   [id]
   (let [res (async/chan)
-        req (.deleteDatabase js/window.indexedDB id)]
+        req (.deleteDatabase js/indexedDB id)]
     (set! (.-onerror req)
           (fn [e]
             (async/put! res (ex-info (str "Cannot delete " id " IndexedDB store.")
@@ -254,7 +254,7 @@
   []
   (go
     (try
-      (let [raw-db-list (<p! (.databases js/window.indexedDB))
+      (let [raw-db-list (<p! (.databases js/indexedDB))
             db-list (js->clj raw-db-list :keywordize-keys true)]
         (set (map :name db-list)))
       (catch js/Error err (js/console.log (ex-cause err))))))
