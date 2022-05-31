@@ -143,7 +143,7 @@
   (-database-exists? [config]
     (async/go
       (let [exists? (or (memory-store? config)
-                        (konserve.orbitdb/store-exists? config)
+                        (ha/<? (konserve.orbitdb/store-exists? config))
                         (contains? (ha/<? (collect-indexeddb-stores))  ;; TODO: ensure that this is our db
                                    (get-in config [:store :id])))]
         (if exists?

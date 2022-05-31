@@ -152,42 +152,40 @@
                        (swap! indexeddb dissoc id)
                        (println "Database deleted: " id))))))
 
-(def orbitdbA (atom {}))
+(def orbitdb-storesA (atom {}))
 
-@orbitdbA
+@orbitdb-storesA
 
-#?(:cljs (defmethod empty-store :orbitdb [{:keys [id orbitdb]}]
+#?(:cljs (defmethod empty-store :orbitdb [{:keys [id ]}]
            (go-try S
                    (let [store (kons/add-hitchhiker-tree-handlers
                                 (<? S (konserve.orbitdb/new-store
                                        id
-                                       :serializer (ser/fressian-serializer)
-                                       :orbitdb orbitdb)))]
-                     (swap! orbitdbA assoc id store)
+                                       :serializer (ser/fressian-serializer))))]
+                     (swap! orbitdb-storesA assoc id store)
                      store))))
 
-#?(:cljs (defmethod connect-store :orbitdb [{:keys [id orbitdb]}]
+#?(:cljs (defmethod connect-store :orbitdb [{:keys [id]}]
            (go-try S
-                   (or (get @orbitdbA id)
+                   (or (get @orbitdb-storesA id)
                        (let [store (kons/add-hitchhiker-tree-handlers
                                     (<? S (konserve.orbitdb/new-store
                                            id
-                                           :serializer (ser/fressian-serializer)
-                                           :orbitdb orbitdb)))]
-                         (swap! orbitdbA assoc id store)
+                                           :serializer (ser/fressian-serializer))))]
+                         (swap! orbitdb-storesA assoc id store)
                          store)))))
 
-#?(:cljs (defmethod release-store :orbitdb [{:keys [id orbitdb]}]
+#?(:cljs (defmethod release-store :orbitdb [{:keys [id]}]
            (do
-             (.close (:store (get @orbitdbA id)))
-             (swap! orbitdbA dissoc id)
+             (.close (:db (get @orbitdb-storesA id)))
+             (swap! orbitdb-storesA dissoc id)
              nil)))
 
-#?(:cljs (defmethod delete-store :orbitdb [{:keys [id orbitdb]}]
+#?(:cljs (defmethod delete-store :orbitdb [{:keys [id ]}]
            (go-try S
-                   (let [deleted? (ha/<? (delete-store {:id id :orbitdb orbitdb}))]
+                   (let [deleted? (ha/<? (delete-store {:id id}))]
                      (when deleted?
-                       (swap! orbitdbA dissoc id)
+                       (swap! orbitdb-storesA dissoc id)
                        (println "Database deleted: " id))))))
 
 
